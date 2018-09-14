@@ -1,5 +1,11 @@
 # canvas-gallery
 A group drawing website
 
-##technoloiges
-- uWebSockets
+## notes
+
+ --------
+| server | ----- | idk something right ?| ------- web sockets ------- [client]
+ --------
+
+
+

@@ -7,7 +7,7 @@ A group drawing website
 
 
 
-## websocket msg format
+## websocket message format
 (does not include "")
 
 "pixelX;pixelY;color"

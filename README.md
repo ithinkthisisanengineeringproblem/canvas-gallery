@@ -14,7 +14,7 @@ A group drawing website
 
 pixelX - X value of pixel 
 pixelY - Y value of pixel 
-color - a hexadecimal color string with #
+color - a hexadecimal color string prefixed by #
 
 eg
 

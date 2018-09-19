@@ -12,13 +12,18 @@ A group drawing website
 
 "pixelX;pixelY;color"
 
-pixelX - X value of pixel 
+
+pixelX - X value of pixel
+ 
 pixelY - Y value of pixel 
+
 color - a hexadecimal color string prefixed by #
+
 
 eg
 
 "134;15;#000087"
+
 "563;412;#005faf"
 
 

@@ -1,9 +1,7 @@
 "use strict";
 
 //initialize websocket with server
-const socket = io("http://localhost:3000", {
-'origins': '*'
-});
+const socket = io("http://localhost:80");
 socket.on('echo', (data) => {
 console.log(data);
 });

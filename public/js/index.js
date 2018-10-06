@@ -7,8 +7,8 @@ socket.emit('update', 'hello');
 let canvas = document.querySelector("#content").childNodes[1];
 let ctx = canvas.getContext('2d');
 canvas.onmousedown = (e) => {
-	let x = e.pageX - e.currentTarget.offsetLeft;
-	let y = e.pageY - e.currentTarget.offsetTop;
+	let x = Math.floor((e.pageX - e.currentTarget.offsetLeft)/4)*4;
+	let y = Math.floor((e.pageY - e.currentTarget.offsetTop)/4)*4;
 	//alert(`mouseX: ${x}, mouseY: ${y}`);
-	e.currentTarget.getContext('2d').fillRect(x, y, 2, 2);
+	e.currentTarget.getContext('2d').fillRect(x, y, 4, 4);
 };

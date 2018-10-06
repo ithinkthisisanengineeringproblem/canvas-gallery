@@ -8,6 +8,7 @@ height: 642px;
 }
 
 #content {
-border: 5px gray;
+border: 5px gray solid;
 margin: 5px;
+border-radius: 7px;
 }

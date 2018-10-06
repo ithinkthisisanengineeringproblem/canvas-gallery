@@ -1,26 +1,28 @@
-let canvas = {
-	init: function() {
+class Canvas {
+	constructor() {
 		let newCanvas = [];
 		for(let i = 0; i < 640; i++) {
 			newCanvas.push([]);
 		}
 		newCanvas.forEach((e) => {
-			for(let j = 0; i< 640; i++) {
+			for(let j = 0; j < 640; j++) {
 				e.push(0xFFFFFF);
 			}
-		}
+		});
 		this.data = newCanvas;
-		)
-	},
-	getPixel: function(x, y) {
+	}
+
+	getPixel(x, y) {
 		return this.data[y][x]
-	},
-	setPixel: function(x, y, newColour) {
+	}
+
+	setPixels(x, y, newColour) {
 		let oldColour = this.data[y][x]
 		this.data[y][x] = newColour;
 		return oldColour
-	},
-	serialiseCanvas: function() {
+	}
+
+	serialiseCanvas() {
 		let output = "";
 		this.data.forEach((y) => {
 			y.forEach((x) => {
@@ -28,8 +30,8 @@ let canvas = {
 			});
 		});
 		return output
-	},
-	deserialiseCanvas: function(input) {
+	}
+	deserialiseCanvas(input) {
 		this.init();
 		let shortInput = input;
 		this.data.forEach((y, yIndex) => {
@@ -40,4 +42,4 @@ let canvas = {
 	}
 }
 
-module.exports = canvas;
+module.exports = Canvas;

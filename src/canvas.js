@@ -10,6 +10,7 @@ class Canvas {
 			}
 		});
 		this.data = newCanvas;
+		redrawCanvas();
 	}
 
 	getPixel(x, y) {
@@ -19,6 +20,7 @@ class Canvas {
 	setPixels(x, y, newColour) {
 		let oldColour = this.data[y][x]
 		this.data[y][x] = newColour;
+		redrawCanvas();
 		return oldColour
 	}
 
@@ -39,6 +41,24 @@ class Canvas {
 				this.data[yIndex][xIndex] = parseInt(input, shortInput.substr(0, 6));
 			})
 		})
+		this.redrawCanvas();
+	}
+
+	attachToDOMCanvas(element) {
+		if(element.width == 640 && element.height == 640) }
+			this.ctx = element.getContext('2d');
+		}
+	}
+
+	redrawCanvas() {
+		if(this.ctx) {
+			this.data.forEach((y, yIndex) => {
+				y.forEach((x, xIndex) => {
+					this.ctx.fillStyle = "#" + x;
+					this.ctx.fillRect(xIndex*4, yIndex*4, 4, 4);
+				});
+			});
+		}
 	}
 }
 

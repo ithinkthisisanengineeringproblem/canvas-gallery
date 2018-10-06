@@ -1,11 +1,11 @@
 class Canvas {
 	constructor() {
 		let newCanvas = [];
-		for(let i = 0; i < 642; i++) {
+		for(let i = 0; i < 214; i++) {
 			newCanvas.push([]);
 		}
 		newCanvas.forEach((e) => {
-			for(let j = 0; j < 642; j++) {
+			for(let j = 0; j < 214; j++) {
 				e.push(0xFFFFFF);
 			}
 		});

@@ -4,5 +4,10 @@ display: flex;
 
 canvas {
 width: 642px;
-height: 642;
+height: 642px;
+}
+
+#content {
+border: 5px gray;
+margin: 5px;
 }

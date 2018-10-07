@@ -14,10 +14,14 @@ app.use("/js", express.static(path.join(__dirname, "public/js")));
 app.use("/css", express.static(path.join(__dirname, "public/css")));
 app.use("/modules", express.static(path.join(__dirname, "src")));
 io.on('connection', (client) => {
-	client.emit("clear", canvas.serialiseCanvas());
 	client.on('request', (data) => {
 		let properties = Pixel.deserialise(data);
 		canvas.setPixel(properties[0], properties[1], properties[2]);
 		io.emit("update", data);
+	})
+	client.on('sync', () => {
+		debugger;
+		console.log(canvas.serialiseCanvas());
+		client.emit("clear", canvas.serialiseCanvas());
 	})
 })

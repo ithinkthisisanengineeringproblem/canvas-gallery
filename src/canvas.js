@@ -32,7 +32,7 @@ class Canvas {
 		let output = "";
 		this.data.forEach((y) => {
 			y.forEach((x) => {
-				output = output + x.toString(16);
+				output = output + x.toString(16).padStart(6, "0");
 			});
 		});
 		return output
@@ -42,8 +42,9 @@ class Canvas {
 		let shortInput = input;
 		this.data.forEach((y, yIndex) => {
 			y.forEach((x, xIndex) => {
-				this.data[yIndex][xIndex] = parseInt(input, this.shortInput.substr(0, 6));
-				this.shortInput = this.shortInput.substr(0, 6);
+				this.data[yIndex][xIndex] = parseInt(shortInput.substr(0, 6), 16);
+				//console.log(shortInput.substr(0, 6));
+				this.shortInput = shortInput.substr(0, 6);
 			})
 		})
 		this.redrawCanvas();
@@ -59,8 +60,13 @@ class Canvas {
 		if(typeof this.ctx !== 'undefined') {
 			this.data.forEach((y, yIndex) => {
 				y.forEach((x, xIndex) => {
-					this.ctx.fillStyle = "#" + x.toString(16).padStart(6, "0");
-					this.ctx.fillRect(xIndex*4, yIndex*4, 4, 4);
+					setTimeout(() => {
+						//alert("#" + x.toString(16).padStart(6, "0"));
+						this.ctx.fillStyle = "#" + x.toString(16);//.padStart(6, "0").toUpperCase();
+						console.log(this.ctx.fillStyle);
+						this.ctx.fillRect(xIndex*4, yIndex*4, 4, 4);
+
+					}, xIndex*100);
 				});
 			});
 		}

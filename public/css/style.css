@@ -3,8 +3,8 @@ display: flex;
 }
 
 canvas {
-width: 642px;
-height: 642px;
+width: 640px;
+height: 640px;
 }
 
 #content {

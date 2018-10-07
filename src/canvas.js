@@ -1,5 +1,9 @@
 class Canvas {
 	constructor() {
+		this.init();
+	}
+
+	init() {
 		let newCanvas = [];
 		for(let i = 0; i < 160; i++) {
 			newCanvas.push([]);
@@ -10,17 +14,17 @@ class Canvas {
 			}
 		});
 		this.data = newCanvas;
-		redrawCanvas();
+		this.redrawCanvas();
 	}
 
 	getPixel(x, y) {
 		return this.data[y][x]
 	}
 
-	setPixels(x, y, newColour) {
+	setPixel(x, y, newColour) {
 		let oldColour = this.data[y][x]
 		this.data[y][x] = newColour;
-		redrawCanvas();
+		this.redrawCanvas();
 		return oldColour
 	}
 
@@ -37,29 +41,31 @@ class Canvas {
 		this.init();
 		let shortInput = input;
 		this.data.forEach((y, yIndex) => {
-			y.ForEach((x, xIndex) => {
-				this.data[yIndex][xIndex] = parseInt(input, shortInput.substr(0, 6));
+			y.forEach((x, xIndex) => {
+				this.data[yIndex][xIndex] = parseInt(input, this.shortInput.substr(0, 6));
+				this.shortInput = this.shortInput.substr(0, 6);
 			})
 		})
 		this.redrawCanvas();
 	}
 
 	attachToDOMCanvas(element) {
-		if(element.width == 640 && element.height == 640) }
+		if(element.width == 640 && element.height == 640) { 
 			this.ctx = element.getContext('2d');
 		}
 	}
 
 	redrawCanvas() {
-		if(this.ctx) {
+		if(typeof this.ctx !== 'undefined') {
 			this.data.forEach((y, yIndex) => {
 				y.forEach((x, xIndex) => {
-					this.ctx.fillStyle = "#" + x;
+					this.ctx.fillStyle = "#" + x.toString(16).padStart(6, "0");
 					this.ctx.fillRect(xIndex*4, yIndex*4, 4, 4);
 				});
 			});
 		}
 	}
 }
-
-module.exports = Canvas;
+if(typeof module !== 'undefined') {
+	module.exports = Canvas;
+}

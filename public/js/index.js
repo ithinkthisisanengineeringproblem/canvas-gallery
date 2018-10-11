@@ -31,8 +31,6 @@ document.querySelector('#content').childNodes[1].onmousedown = (e) => {
 	//get click position
 	let x = Math.floor((e.pageX - e.currentTarget.offsetLeft)/4);
 	let y = Math.floor((e.pageY - e.currentTarget.offsetTop)/4);
-	//log click position
-	console.log(`mouseX: ${x}, mouseY: ${y}`);
 	//send pixel-change data to websocket server 
 	socket.emit('request', Pixel.serialise(x, y, 0xff00ff))
 };

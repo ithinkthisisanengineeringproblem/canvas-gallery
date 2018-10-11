@@ -6,7 +6,6 @@ let path = require("path");
 let Pixel = require("./src/pixel.js");
 let Canvas = require('./src/canvas.js');
 let canvas = new Canvas();
-canvas.setPixel(5,5,'#ff0000');
 
 server.listen(8080);
 

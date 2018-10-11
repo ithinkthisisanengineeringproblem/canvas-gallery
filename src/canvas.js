@@ -21,6 +21,7 @@ class Canvas {
 		return this.data[y][x]
 	}
 
+	//set the pixel, at xy to newColour
 	setPixel(x, y, newColour) {
 		let oldColour = this.data[y][x]
 		this.data[y][x] = newColour;
@@ -28,6 +29,7 @@ class Canvas {
 		return oldColour
 	}
 
+	//convert canvas's pixels to string
 	serialiseCanvas() {
 		let output = "";
 		this.data.forEach((y) => {
@@ -37,6 +39,8 @@ class Canvas {
 		});
 		return output
 	}
+
+	
 	deserialiseCanvas(input) {
 		this.init();
 		let shortInput = input;
@@ -47,6 +51,7 @@ class Canvas {
 				this.shortInput = shortInput.substr(0, 6);
 			})
 		})
+		console.log("received canvas")
 		this.redrawCanvas();
 	}
 
@@ -58,17 +63,20 @@ class Canvas {
 
 	redrawCanvas() {
 		if(typeof this.ctx !== 'undefined') {
+			console.log("ctx defined");
 			this.data.forEach((y, yIndex) => {
 				y.forEach((x, xIndex) => {
 					setTimeout(() => {
 						//alert("#" + x.toString(16).padStart(6, "0"));
 						this.ctx.fillStyle = "#" + x.toString(16);//.padStart(6, "0").toUpperCase();
-						console.log(this.ctx.fillStyle);
+						//console.log(this.ctx.fillStyle);
 						this.ctx.fillRect(xIndex*4, yIndex*4, 4, 4);
 
 					}, xIndex*100);
 				});
 			});
+		} else {
+			console.log("ctx undefined");
 		}
 	}
 }

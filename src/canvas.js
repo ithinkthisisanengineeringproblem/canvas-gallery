@@ -66,13 +66,10 @@ class Canvas {
 			console.log("ctx defined");
 			this.data.forEach((y, yIndex) => {
 				y.forEach((x, xIndex) => {
-					setTimeout(() => {
-						//alert("#" + x.toString(16).padStart(6, "0"));
-						this.ctx.fillStyle = "#" + x.toString(16);//.padStart(6, "0").toUpperCase();
-						//console.log(this.ctx.fillStyle);
-						this.ctx.fillRect(xIndex*4, yIndex*4, 4, 4);
-
-					}, xIndex*100);
+					//alert("#" + x.toString(16).padStart(6, "0"));
+					this.ctx.fillStyle = "#" + x.toString(16);//.padStart(6, "0").toUpperCase();
+					//console.log(this.ctx.fillStyle);
+					this.ctx.fillRect(xIndex*4, yIndex*4, 4, 4);
 				});
 			});
 		} else {

@@ -1,9 +1,9 @@
 //initialize websocket with server
-const socket = io("http://localhost:8080");
+const socket = io('http://localhost:8080');
 //create canvas
 let canvas = new Canvas();
 //attach canvas to DOM canvas
-canvas.attachToDOMCanvas(document.querySelector("#content").childNodes[1]);
+canvas.attachToDOMCanvas(document.getElementById('mainCanvas'));
 
 console.log("***********************\n"
 						+document.querySelector("#content")+
@@ -14,14 +14,15 @@ socket.on('update', (data) => {
 	//deserialise data from server
 	let properties = Pixel.deserialise(data);
 	//log that we are updateing
-	console.log("updating");
+	console.log('updating');
 	//update pixel value specifyed by server
 	canvas.setPixel(properties[0], properties[1], properties[2]);
 }); 
 
 socket.on('clear', (data) => {
 	canvas.deserialiseCanvas(data);
-	console.log("clearing");
+	console.log(data);
+	console.log('clearing');
 })
 
 socket.emit('sync');

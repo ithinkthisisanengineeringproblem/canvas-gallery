@@ -5,10 +5,6 @@ let canvas = new Canvas();
 //attach canvas to DOM canvas
 canvas.attachToDOMCanvas(document.getElementById('mainCanvas'));
 
-console.log("***********************\n"
-						+document.querySelector("#content")+
-						"\n***********************\n");
-
 //on update from websocket server
 socket.on('update', (data) => { 
 	//deserialise data from server

@@ -63,7 +63,6 @@ class Canvas {
 
 	redrawCanvas() {
 		if(typeof this.ctx !== 'undefined') {
-			console.log("ctx defined");
 			this.data.forEach((y, yIndex) => {
 				y.forEach((x, xIndex) => {
 					//alert("#" + x.toString(16).padStart(6, "0"));
@@ -72,8 +71,6 @@ class Canvas {
 					this.ctx.fillRect(xIndex*4, yIndex*4, 4, 4);
 				});
 			});
-		} else {
-			console.log("ctx undefined");
 		}
 	}
 }

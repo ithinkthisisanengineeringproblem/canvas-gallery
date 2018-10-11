@@ -24,7 +24,7 @@ socket.on('clear', (data) => {
 socket.emit('sync');
 
 //on click
-document.querySelector('#content').childNodes[1].onmousedown = (e) => {
+document.getElementById('mainCanvas').onmousedown = (e) => {
 	//get click position
 	let x = Math.floor((e.pageX - e.currentTarget.offsetLeft)/4);
 	let y = Math.floor((e.pageY - e.currentTarget.offsetTop)/4);

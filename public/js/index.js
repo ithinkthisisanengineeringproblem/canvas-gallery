@@ -1,4 +1,4 @@
-//initialize websocket with server
+//initialise websocket with server
 const socket = io('http://localhost:8080');
 //create canvas
 let canvas = new Canvas();

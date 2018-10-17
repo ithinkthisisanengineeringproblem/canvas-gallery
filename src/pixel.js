@@ -10,3 +10,6 @@ let Pixel = {
 		return elements
 	}
 }
+if(typeof module !== 'undefined') {
+	module.exports = Pixel;
+}

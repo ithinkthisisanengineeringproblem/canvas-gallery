@@ -37,3 +37,6 @@ The actual content sent is just the serialisation of the canvas
 This uses the socket.io message name "request"
 The reason the client has to wait for the server to actually paint the canvas is to allow for a sort of rudimentary rate limiting.
 This using the format as the server's update message.
+
+## Client Full Canvas
+The client can request the full canvas by using the message name 'sync'

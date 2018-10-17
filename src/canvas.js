@@ -44,13 +44,14 @@ class Canvas {
 	deserialiseCanvas(input) {
 		this.init();
 		let shortInput = input;
+		console.log(`shortInput length is ${shortInput.length/6}`);
 		for(let i = 0; i < 160; i++) {
 			for(let j = 0; j < 160; j++) {
-				this.setPixel(j,i,parseInt(shortInput.slice(0, 6), 16));
-				shortInput = shortInput.slice(0, 6);
+				this.data[i][j] = parseInt(shortInput.slice(0, 6), 16);
+				shortInput = shortInput.slice(6);
 			}
 		}
-		console.log("received canvas")
+		console.log(`shortInput is ${shortInput}`);
 		this.redrawCanvas();
 	}
 
@@ -62,11 +63,17 @@ class Canvas {
 
 	redrawCanvas() {
 		if(typeof this.ctx !== 'undefined') {
+			console.log('called');
+			if(true) {
+				console.log(this.data);
+			}
 			for(let k = 0; k < 160; k++) {
 				for(let j = 0; j < 160; j++) {
-					this.ctx.fillStyle = "#" + this.getPixel(j, k).toString(16).padStart(6, "0");
+					this.ctx.fillStyle = "#" + this.data[j][k].toString(16).padStart(6, "0");
 					this.ctx.fillRect(j*4, k*4, 4, 4);
-					console.log('rect');
+					if(this.ctx.fillStyle == "#ff00ff") {
+						console.log("fillStyle is pink");
+					}
 				}
 			}
 		}

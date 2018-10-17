@@ -29,5 +29,5 @@ document.getElementById('mainCanvas').onmousedown = (e) => {
 	let x = Math.floor((e.pageX - e.currentTarget.offsetLeft)/4);
 	let y = Math.floor((e.pageY - e.currentTarget.offsetTop)/4);
 	//send pixel-change data to websocket server 
-	socket.emit('request', Pixel.serialise(x, y, 0xff00ff))
-};
+	socket.emit('request', Pixel.serialise(y, x, 0xFF00FF));
+}

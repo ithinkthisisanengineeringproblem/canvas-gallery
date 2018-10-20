@@ -9,26 +9,19 @@ let canvas = new Canvas();
 
 server.listen(8080);
 
-//setup express app
+// Setup static file serving
 app.use("/", express.static(path.join(__dirname, "public")));
 app.use("/js", express.static(path.join(__dirname, "public/js")));
 app.use("/css", express.static(path.join(__dirname, "public/css")));
 app.use("/modules", express.static(path.join(__dirname, "src")));
 
-//websocket server:
-io.on('connection', (client) => {
-	//when client sends request
-	client.on('request', (data) => {
-		//deserialise data sent from client
-		let properties = Pixel.deserialise(data);
-		//update the canvas's pixel values
-		canvas.setPixel(properties[0], properties[1], properties[2]);
-		//send update ?
-		io.emit("update", data);
+io.on('connection', (client) => { // When a client connects (ie. someone loads the webpage)
+	client.on('request', (data) => { // When client sends request to update a pixel
+		let properties = Pixel.deserialise(data); // Deserialise data sent from client
+		canvas.setPixel(...properties); // Update the canvas's pixel values
+		io.emit("update", data); // Send update to other clients 
 	})
-	client.on('sync', () => {
-		debugger;
-		//console.log(canvas.serialiseCanvas());
-		client.emit("clear", canvas.serialiseCanvas());
+	client.on('sync', () => { // Because you can't just send this as soon as the client connects (they won't be ready) we use to 'sync' event to show that we are
+		client.emit("clear", canvas.serialiseCanvas()); // Currently the clear event is only used for this, however, you could use it if you wanted to reset the canvas
 	})
 })

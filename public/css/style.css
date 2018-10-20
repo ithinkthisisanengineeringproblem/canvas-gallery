@@ -1,8 +1,10 @@
-.main {
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+#main {
 display: flex;
+flex-direction: row;
 }
 
-canvas {
+#mainCanvas {
 width: 640px;
 height: 640px;
 }
@@ -11,12 +13,12 @@ height: 640px;
 border: 5px gray solid;
 margin: 5px;
 border-radius: 7px;
-height: 650px;
-width: 650px;
 }
 
 ul {
 	list-style-type: none;
+	margin-top: .2em;
+	margin-bottom: .2em;
 }
 
 li {
@@ -29,5 +31,34 @@ nav {
 
 body {
 	margin: 0px;
-	font-family: sans-serif;
+	font-family: 'Roboto Mono', sans-serif;
+}
+
+#controls {
+	/*width: 150px;*/
+	margin: 5px;
+	border: 5px gray solid;
+	border-radius: 7px;
+	/*min-width: 150px;
+	max-width: 150px;
+	max-height: 25px;*/
+}
+
+#title {
+	font-size: 1.2em;
+}
+
+.pickerButton {
+	height: 25px;
+	width: 25px;
+	padding: 0px;
+}
+
+#sidepanel {
+	display: flex;
+	flex-direction: column;
+}
+
+p {
+	margin: 5px;
 }

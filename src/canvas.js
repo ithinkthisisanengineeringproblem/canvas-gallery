@@ -54,6 +54,9 @@ class Canvas {
 	attachToDOMCanvas(element) { // Attach to a <canvas> element so that the data can be displayed visually
 		if(element.width == 640 && element.height == 640) { 
 			this.ctx = element.getContext('2d');
+			this.scaleFactor = 4;
+			this.origin = [0, 0];
+			this.ctx.scale(4, 4);
 		}
 	}
 
@@ -62,10 +65,64 @@ class Canvas {
 			for(let k = 0; k < 160; k++) {
 				for(let j = 0; j < 160; j++) {
 					this.ctx.fillStyle = "#" + this.data[j][k].toString(16).padStart(6, "0");
-					this.ctx.fillRect(j*4, k*4, 4, 4);
+					this.ctx.fillRect(j, k, 1, 1);
 				}
 			}
+			this.ctx.fillStyle = "#F0F";
+			this.ctx.fillRect(-50, -50, 50, 260);
+			this.ctx.fillRect(210, -50, 50, 260);
+			this.ctx.fillRect(0, 160, 160, 50);
+			this.ctx.fillRect(0, -50, 160, 50);
 		}
+	}
+
+	scale(factor) {
+		if(this.scaleFactor * factor >= 4) {
+			this.scaleFactor = this.scaleFactor * factor;
+			this.ctx.scale(factor, factor);
+		} else {
+			this.ctx.scale(4/this.scaleFactor, 4/this.scaleFactor);
+			this.scaleFactor = 4;
+		}
+		this.translate(0, 0, this.scaleFactor);
+		this.redrawCanvas();
+	}
+
+	translate(x, y) {
+		this.setOrigin(...this.limitXY(this.origin[0] + x, this.origin[1] + y, this.scaleFactor));
+		this.redrawCanvas();
+	}
+
+	setOrigin(x, y, draw) {
+		this.ctx.setTransform(this.scaleFactor, 0, 0, this.scaleFactor, x, y);
+		this.origin = [x, y];
+		if(draw) {
+			this.redrawCanvas();
+		}
+	}
+	
+	limitXY(x, y, size) { // TODO: Make this function work with non-square boxes
+		let coords = [0, 0]; // x then y
+		if(x + size > 210) {
+			coords[0] = 210 - size;
+		} else if(x < -50) {
+			coords[0] = -50;
+		} else {
+			coords[0] = x;
+		}
+
+		if(y + size > 210) {
+			coords[1] = 210 - size;
+		} else if(y < -50) {
+			coords[1] = -50;
+		} else {
+			coords[1] = y;
+		}
+		return coords
+	}
+
+	viewportSize() { // It's important to note that this the viewport size in relation to standard scale (4x). This means that a scaleFactor being 8 makes the viewport size 80.
+		return 160 * 4 / this.scaleFactor // The four is in there because the canvas starts off scaled.
 	}
 }
 

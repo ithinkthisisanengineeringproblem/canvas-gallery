@@ -62,3 +62,14 @@ body {
 p {
 	margin: 5px;
 }
+button {
+	border: none;
+}
+
+#active {
+	border: 3px black solid;
+}
+
+#active-dark {
+	border: 3px white solid;
+}

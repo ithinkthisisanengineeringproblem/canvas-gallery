@@ -27,12 +27,19 @@ for (let colour of colourList) { // Make a button for each colour
 	let button = document.createElement("button");
 	button.className = "pickerButton";                                         // |
 	button.style.backgroundColor = "#" + colour.toString(16).padStart(6, "0"); // | Style the buttons
-	button.style.border = "none";                                              // |
 	button.addEventListener("mousedown", (e) => { // Let the button change the paint colour
 		paintColour = colour;
+		e.target.parentNode.childNodes.forEach((x) => {
+			x.id = "";
+		});
+		if(colour > 75) {
+			e.target.id = "active";
+		} else {
+			e.target.id = "active-dark";
+		}
 	})
 	document.getElementById("controls").appendChild(button); // Add the new button to the DOM
 }
-
+document.getElementById("controls").childNodes[1].id = "active-dark";
 document.getElementById("controls").style["max-width"] = colourList.length * 25 + "px"; // | Programmatically style the button parent to fit the button properly
 document.getElementById("controls").style["min-width"] = colourList.length * 25 + "px"; // |

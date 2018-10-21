@@ -16,8 +16,8 @@ socket.on('clear', (data) => { // When the server sends a whole new canvas
 socket.emit('sync'); // Let the server know that we are ready to receive the canvas
 
 document.getElementById('mainCanvas').onmousedown = (e) => { // When the canvas gets clicked
-	let x = Math.floor((e.pageX - e.currentTarget.offsetLeft)/4); // | Get click position
-	let y = Math.floor((e.pageY - e.currentTarget.offsetTop)/4); //  |
+	let x = Math.floor((e.pageX - e.currentTarget.offsetLeft)/canvas.scaleFactor) - canvas.origin[0] / canvas.scaleFactor; // | Get click position
+	let y = Math.floor((e.pageY - e.currentTarget.offsetTop)/canvas.scaleFactor) - canvas.origin[1] / canvas.scaleFactor; //  |
 	socket.emit('request', Pixel.serialise(y, x, paintColour)); // Send our request off to the server
 }
 

@@ -22,10 +22,12 @@ class Canvas {
 	}
 
 	setPixel(x, y, newColour) { // Set a pixel to newColour
-		let oldColour = this.data[y][x]
-		this.data[y][x] = newColour;
-		this.redrawCanvas();
-		return oldColour
+			if(x > -1 && x < 160 && y > -1 && y < 160) {
+			let oldColour = this.data[y][x]
+			this.data[y][x] = newColour;
+			this.redrawCanvas();
+			return oldColour
+		}
 	}
 
 	serialiseCanvas() { // Convert canvas's pixels to string
@@ -70,7 +72,7 @@ class Canvas {
 			}
 			this.ctx.fillStyle = "#F0F";
 			this.ctx.fillRect(-50, -50, 50, 260);
-			this.ctx.fillRect(210, -50, 50, 260);
+			this.ctx.fillRect(160, -50, 50, 260);
 			this.ctx.fillRect(0, 160, 160, 50);
 			this.ctx.fillRect(0, -50, 160, 50);
 		}

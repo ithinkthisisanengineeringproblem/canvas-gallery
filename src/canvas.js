@@ -14,6 +14,7 @@ class Canvas {
 			}
 		});
 		this.data = newCanvas;
+		this.updated = true;
 		this.redrawCanvas();
 	}
 
@@ -23,9 +24,10 @@ class Canvas {
 
 	setPixel(x, y, newColour) { // Set a pixel to newColour
 			if(x > -1 && x < 160 && y > -1 && y < 160) {
-			let oldColour = this.data[y][x]
-			this.data[y][x] = newColour;
-			this.redrawCanvas();
+				let oldColour = this.data[y][x]
+				this.data[y][x] = newColour;
+				this.redrawCanvas();
+				this.updated = true;
 			return oldColour
 		}
 	}
@@ -50,6 +52,7 @@ class Canvas {
 				shortInput = shortInput.slice(6);
 			}
 		}
+		this.updated = true;
 		this.redrawCanvas();
 	}
 
@@ -59,17 +62,18 @@ class Canvas {
 			this.scaleFactor = 4;
 			this.origin = [0, 0];
 			this.ctx.scale(4, 4);
+			this.ctx.imageSmoothingEnabled = false;
 		}
 	}
 
 	redrawCanvas() { // Draw data to a <canvas> element
 		if(typeof this.ctx !== 'undefined') {
-			for(let k = 0; k < 160; k++) {
-				for(let j = 0; j < 160; j++) {
-					this.ctx.fillStyle = "#" + this.data[j][k].toString(16).padStart(6, "0");
-					this.ctx.fillRect(j, k, 1, 1);
-				}
+			if(this.updated) {
+				this.convertCanvasToByteArray();
 			}
+			createImageBitmap(this.cachedImageData, 0, 0, 160, 160, {resizeQuality: "high"}).then((image) => {
+				this.ctx.drawImage(image, 0, 0, 160, 160);
+			})
 			this.ctx.fillStyle = "#F0F";
 			this.ctx.fillRect(-50, -50, 50, 260);
 			this.ctx.fillRect(160, -50, 50, 260);
@@ -125,6 +129,19 @@ class Canvas {
 
 	viewportSize() { // It's important to note that this the viewport size in relation to standard scale (4x). This means that a scaleFactor being 8 makes the viewport size 80.
 		return 160 * 4 / this.scaleFactor // The four is in there because the canvas starts off scaled.
+	}
+
+	convertCanvasToByteArray() {
+		let bytes = this.data.map((row) => {
+			return row.map((colour) => {
+				return [(colour & 0xFF0000) >>> 16, (colour & 0x00FF00) >> 8, (colour & 0x0000FF), 0xFF];
+			})
+		})
+		bytes = bytes.flat(2);
+		this.cachedBytes = Uint8ClampedArray.of(...bytes);
+		this.cachedImageData = new ImageData(this.cachedBytes, 160, 160);
+		this.updated = false;
+		return this.cachedBytes
 	}
 }
 

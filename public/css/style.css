@@ -7,6 +7,7 @@ flex-direction: row;
 #mainCanvas {
 width: 640px;
 height: 640px;
+image-rendering: pixelated;
 }
 
 #content {

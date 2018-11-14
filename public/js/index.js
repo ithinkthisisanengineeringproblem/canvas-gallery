@@ -3,11 +3,25 @@ let canvas = new Canvas(); // Create a new Canvas object
 canvas.attachToDOMCanvas(document.getElementById('mainCanvas')); // Attach the Canvas object to the DOM so that it can draw
 
 let paintColour = 0x000000; // Set the default paint colour
+let toolState = 0; // Can either be 0 or 1, 0 being paint tool, 1 being pan and zoom
+let mouseDown = 0;
+
+function transformDeltaZ(delta) {
+	let result = delta;
+	if(result < 0) {
+	}
+}
+
+function setPixel(e) { // For when something a pixel gets clicked
+	let x = Math.floor((e.pageX - e.currentTarget.offsetLeft)/canvas.scaleFactor) - canvas.origin[0] / canvas.scaleFactor; // | Get click position
+	let y = Math.floor((e.pageY - e.currentTarget.offsetTop)/canvas.scaleFactor) - canvas.origin[1] / canvas.scaleFactor; //  |
+	socket.emit('request', Pixel.serialise(x, y, paintColour)); // Send our request off to the server
+}
 
 socket.on('update', (data) => { // When we receive an updated pixel from the server
 	let properties = Pixel.deserialise(data); // Unpack the data into an array
 	canvas.setPixel(...properties); // Set the pixel
-}); 
+});
 
 socket.on('clear', (data) => { // When the server sends a whole new canvas
 	canvas.deserialiseCanvas(data); // Deserialise and paint the data
@@ -15,11 +29,17 @@ socket.on('clear', (data) => { // When the server sends a whole new canvas
 
 socket.emit('sync'); // Let the server know that we are ready to receive the canvas
 
-document.getElementById('mainCanvas').onmousedown = (e) => { // When the canvas gets clicked
-	let x = Math.floor((e.pageX - e.currentTarget.offsetLeft)/canvas.scaleFactor) - canvas.origin[0] / canvas.scaleFactor; // | Get click position
-	let y = Math.floor((e.pageY - e.currentTarget.offsetTop)/canvas.scaleFactor) - canvas.origin[1] / canvas.scaleFactor; //  |
-	socket.emit('request', Pixel.serialise(y, x, paintColour)); // Send our request off to the server
-}
+document.getElementById('mainCanvas').addEventListener("click", (e) => {
+	if(toolState == 0) {
+		setPixel(e);
+	} else {
+	}
+});
+
+document.getElementById('mainCanvas').addEventListener('wheel', (e) => {
+	canvas.translate(Math.floor(e.deltaX) * -1, Math.floor(e.deltaY) * -1);
+	console.log(`deltaX: ${e.deltaX}, deltaY: ${e.deltaY}, deltaZ: ${e.deltaZ}`)
+})
 
 let colourList = [0x000000, 0xFFFFFF, 0x00FF00, 0x0000FF, 0xFF0000, 0xFFFF00, 0xFF00FF, 0x00FFFF]; // List of colours avaliable in the colour picker
 

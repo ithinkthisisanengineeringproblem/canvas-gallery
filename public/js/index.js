@@ -4,7 +4,8 @@ canvas.attachToDOMCanvas(document.getElementById('mainCanvas')); // Attach the C
 
 let paintColour = 0x000000; // Set the default paint colour
 let toolState = 0; // Can either be 0 or 1, 0 being paint tool, 1 being pan and zoom
-let mouseDown = 0;
+let mouseDown = false;
+let lastCoords = [0, 0];
 
 function transformDeltaZ(delta) {
 	let result = delta;
@@ -35,6 +36,24 @@ document.getElementById('mainCanvas').addEventListener("click", (e) => {
 	} else {
 	}
 });
+
+document.getElementById('mainCanvas').addEventListener("mousedown", (e) => {
+	lastCoords = [e.pageX - e.currentTarget.offsetLeft, e.pageY - e.currentTarget.offsetTop];
+	mouseDown = true;
+})
+
+document.getElementById('mainCanvas').addEventListener("mouseup", (e) => {
+	mouseDown = false;
+})
+
+document.getElementById('mainCanvas').addEventListener("mousemove", (e) => {
+	// if(mouseDown) {
+		console.log(`deltaX: ${lastCoords[0] - e.pageX - e.currentTarget.offsetLeft}, deltaY: ${lastCoords[1] - e.pageY - e.currentTarget.offsetTop}`)
+		// canvas.translate((lastCoords[0] - e.pageX - e.currentTarget.offsetLeft)/-2, (lastCoords[1] - e.pageY - e.currentTarget.offsetTop)/-2);
+		lastCoords = [e.pageX - e.currentTarget.offsetLeft, e.pageY - e.currentTarget.offsetTop];
+		console.log(lastCoords);
+	// }
+})
 
 document.getElementById('mainCanvas').addEventListener('wheel', (e) => {
 	canvas.translate(Math.floor(e.deltaX) * -1, Math.floor(e.deltaY) * -1);

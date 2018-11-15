@@ -26,8 +26,8 @@ class Canvas {
 			if(x > -1 && x < 160 && y > -1 && y < 160) {
 				let oldColour = this.data[y][x]
 				this.data[y][x] = newColour;
-				this.redrawCanvas();
 				this.updated = true;
+				this.redrawCanvas();
 			return oldColour
 		}
 	}
@@ -42,7 +42,6 @@ class Canvas {
 		return output
 	}
 
-	
 	deserialiseCanvas(input) { // Read in a serialised string of canvas pixels and draw them to the canvas
 		this.init();
 		let shortInput = input;
@@ -95,7 +94,7 @@ class Canvas {
 	}
 
 	translate(x, y) {
-		this.setOrigin(...this.limitXY(this.origin[0] + x, this.origin[1] + y, this.scaleFactor));
+		this.setOrigin(...this.limitXY(this.origin[0] + x, this.origin[1] + y, this.viewportSize()));
 		this.redrawCanvas();
 	}
 

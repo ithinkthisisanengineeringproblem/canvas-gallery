@@ -7,7 +7,7 @@ let paintColour = 0x000000; // Set the default paint colour
 let toolState = 0; // Can either be 0 or 1, 0 being paint tool, 1 being pan and zoom
 let mouseDown = false;
 let lastCoords = [0, 0];
-let moveing = false;
+let panning = false;
 
 function toolSwitch() {
 	if (toolState == 0) {
@@ -38,27 +38,35 @@ socket.emit('sync'); // Let the server know that we are ready to receive the can
 document.getElementById('mainCanvas').addEventListener("mousedown", (e) => {
 	if (e.button == 1) { //on middle click (scrollwheel click)
 		toolSwitch();	//switch toolState
-		moving = false;
+		panning = false;
 	} else if (e.button == 0) { //on left click
 		if(toolState == 0) { //if drawing
 			setPixel(e); //set pixel
-			moving = false;
-		} else { //if moving
-			lastCoords = [e.pageX - e.currentTarget.offsetLeft, e.pageY - e.currentTarget.offsetTop]; //store current coords
-			console.log('should move from' + lastCoords); //debug msg
-			moving = true; //set moving flag true
+			panning = false;
+		} else { //if panning
+			lastCoords = [e.clientX, e.clientY]; //store current coords
+			panning = true; //set panning flag true
 		}
 	}
 });
 
 //on mouse up
 document.getElementById('mainCanvas').addEventListener("mouseup", (e) => {
-	if (moving == true) { //if moveing flag is set true
-		here = [e.pageX - e.currentTarget.offsetLeft, e.pageY - e.currentTarget.offsetTop]; //get current coords
-		dis = [here[0] - lastCoords[0], here[1] - lastCoords[0]]; //get distance between current and last (where mouse was held down)
-		canvas.translate(...dis); //translate by this distance (allows user to 'drag' the canvas around)
+	if (panning == true) { //if panning flag is set true
+		panning = false;   //set it flase
 	}
 })
+
+document.getElementById('mainCanvas').addEventListener('mousemove', (e) => {
+	if (panning) { //if panning
+		//translate canvas relative to mouse movement
+		let dis = [e.clientX - lastCoords[0], e.clientY - lastCoords[1]];
+		//if (dis[0] >= 2 || dis[1] >= 2) {
+		canvas.translate(...dis);
+		//}
+		lastCoords = [e.clientX, e.clientY]; //restore current coords
+	}
+});
 
 document.getElementById('mainCanvas').addEventListener('wheel', (e) => {
 	canvas.scale(Math.floor(e.deltaX)); //TODO: make scale on scroll work

@@ -41,7 +41,7 @@ document.getElementById('mainCanvas').addEventListener("mousedown", (e) => {
 		panning = false;
 	} else if (e.button == 0) { //on left click
 		if(toolState == 0) { //if drawing
-			setPixel(e); //set pixel
+			mouseDown = true; //set mouse down, allows mousemove listner to draw
 			panning = false;
 		} else { //if panning
 			lastCoords = [e.clientX, e.clientY]; //store current coords
@@ -55,16 +55,19 @@ document.getElementById('mainCanvas').addEventListener("mouseup", (e) => {
 	if (panning == true) { //if panning flag is set true
 		panning = false;   //set it flase
 	}
+	mouseDown = false;
 })
 
 document.getElementById('mainCanvas').addEventListener('mousemove', (e) => {
 	if (panning) { //if panning
 		//translate canvas relative to mouse movement
 		let dis = [e.clientX - lastCoords[0], e.clientY - lastCoords[1]];
-		//if (dis[0] >= 2 || dis[1] >= 2) {
 		canvas.translate(...dis);
-		//}
 		lastCoords = [e.clientX, e.clientY]; //restore current coords
+	} else {
+		if (mouseDown == true) {
+			setPixel(e);
+		}
 	}
 });
 

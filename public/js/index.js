@@ -1,4 +1,5 @@
 const socket = io('http://localhost:8080'); // Connect to the server
+
 let canvas = new Canvas(); // Create a new Canvas object
 canvas.attachToDOMCanvas(document.getElementById('mainCanvas')); // Attach the Canvas object to the DOM so that it can draw
 
@@ -6,10 +7,13 @@ let paintColour = 0x000000; // Set the default paint colour
 let toolState = 0; // Can either be 0 or 1, 0 being paint tool, 1 being pan and zoom
 let mouseDown = false;
 let lastCoords = [0, 0];
+let moveing = false;
 
-function transformDeltaZ(delta) {
-	let result = delta;
-	if(result < 0) {
+function toolSwitch() {
+	if (toolState == 0) {
+		toolState = 1;
+	} else {
+		toolState = 0;
 	}
 }
 
@@ -30,35 +34,36 @@ socket.on('clear', (data) => { // When the server sends a whole new canvas
 
 socket.emit('sync'); // Let the server know that we are ready to receive the canvas
 
-document.getElementById('mainCanvas').addEventListener("click", (e) => {
-	if(toolState == 0) {
-		setPixel(e);
-	} else {
+//on mouse down
+document.getElementById('mainCanvas').addEventListener("mousedown", (e) => {
+	if (e.button == 1) { //on middle click (scrollwheel click)
+		toolSwitch();	//switch toolState
+		moving = false;
+	} else if (e.button == 0) { //on left click
+		if(toolState == 0) { //if drawing
+			setPixel(e); //set pixel
+			moving = false;
+		} else { //if moving
+			lastCoords = [e.pageX - e.currentTarget.offsetLeft, e.pageY - e.currentTarget.offsetTop]; //store current coords
+			console.log('should move from' + lastCoords); //debug msg
+			moving = true; //set moving flag true
+		}
 	}
 });
 
-document.getElementById('mainCanvas').addEventListener("mousedown", (e) => {
-	lastCoords = [e.pageX - e.currentTarget.offsetLeft, e.pageY - e.currentTarget.offsetTop];
-	mouseDown = true;
-})
-
+//on mouse up
 document.getElementById('mainCanvas').addEventListener("mouseup", (e) => {
-	mouseDown = false;
-})
-
-document.getElementById('mainCanvas').addEventListener("mousemove", (e) => {
-	// if(mouseDown) {
-		console.log(`deltaX: ${lastCoords[0] - e.pageX - e.currentTarget.offsetLeft}, deltaY: ${lastCoords[1] - e.pageY - e.currentTarget.offsetTop}`)
-		// canvas.translate((lastCoords[0] - e.pageX - e.currentTarget.offsetLeft)/-2, (lastCoords[1] - e.pageY - e.currentTarget.offsetTop)/-2);
-		lastCoords = [e.pageX - e.currentTarget.offsetLeft, e.pageY - e.currentTarget.offsetTop];
-		console.log(lastCoords);
-	// }
+	if (moving == true) { //if moveing flag is set true
+		here = [e.pageX - e.currentTarget.offsetLeft, e.pageY - e.currentTarget.offsetTop]; //get current coords
+		dis = [here[0] - lastCoords[0], here[1] - lastCoords[0]]; //get distance between current and last (where mouse was held down)
+		canvas.translate(...dis); //translate by this distance (allows user to 'drag' the canvas around)
+	}
 })
 
 document.getElementById('mainCanvas').addEventListener('wheel', (e) => {
-	canvas.translate(Math.floor(e.deltaX) * -1, Math.floor(e.deltaY) * -1);
-	console.log(`deltaX: ${e.deltaX}, deltaY: ${e.deltaY}, deltaZ: ${e.deltaZ}`)
+	canvas.scale(Math.floor(e.deltaX)); //TODO: make scale on scroll work
 })
+
 
 let colourList = [0x000000, 0xFFFFFF, 0x00FF00, 0x0000FF, 0xFF0000, 0xFFFF00, 0xFF00FF, 0x00FFFF]; // List of colours avaliable in the colour picker
 

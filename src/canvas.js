@@ -26,7 +26,10 @@ class Canvas {
 			if(x > -1 && x < 160 && y > -1 && y < 160) {
 				let oldColour = this.data[y][x]
 				this.data[y][x] = newColour;
+<<<<<<< Updated upstream
 				this.updated = true;
+=======
+>>>>>>> Stashed changes
 				this.redrawCanvas();
 			return oldColour
 		}

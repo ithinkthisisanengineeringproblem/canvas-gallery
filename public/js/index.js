@@ -4,7 +4,7 @@ let canvas = new Canvas(); // Create a new Canvas object
 canvas.attachToDOMCanvas(document.getElementById('mainCanvas')); // Attach the Canvas object to the DOM so that it can draw
 
 let paintColour = 0x000000; // Set the default paint colour
-let toolState = 0; // Can either be 0 or 1, 0 being paint tool, 1 being pan and zoom
+let toolState = 0; // Can either be 0 or 1, 0 being paint tool, 1 being pan mode	
 let mouseDown = false;
 let lastCoords = [0, 0];
 let panning = false;

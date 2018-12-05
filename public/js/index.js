@@ -8,7 +8,6 @@ let toolState = 0; // Can either be 0 or 1, 0 being paint tool, 1 being pan and 
 let mouseDown = false;
 let lastCoords = [0, 0];
 let panning = false;
-let scroll = 0;
 
 function toolSwitch() {
 	if (toolState == 0) {
@@ -72,22 +71,16 @@ document.getElementById('mainCanvas').addEventListener('mousemove', (e) => {
 	}
 });
 
+
 document.getElementById('mainCanvas').addEventListener('wheel', (e) => {
-	if (e.deltaY > 0) {
-		//increment scroll counter
-		scroll++;
+	//upton upwards scrolling, zoom in (scale up)
+	if (e.deltaY < 2) {
+		canvas.scale(1.25);
 	}
-
-	if (e.deltaY < 0) {
-		//decrement scroll counter
-		scroll--;
-	}
-
-	if (Math.abs(scroll) > 1) {
-		//scale reletive to scroll amount
-		canvas.scale(scroll/4);
-		//reset scroll counter
-		scroll = 0;
+	
+	//upton downwards scrolling, zoom out (scale down)
+	if (e.deltaY > -2){
+		canvas.scale(0.75);
 	}
 })
 

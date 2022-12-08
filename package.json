@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/ithinkthisisaengineeringproblem/canvas-gallery#readme",
   "dependencies": {
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "socketio": "^1.0.0"
   }
 }
